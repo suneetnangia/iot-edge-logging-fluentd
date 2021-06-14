@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "projectName": {
+        "type": "string",
+        "defaultValue": "iothublogs",
+        "minLength": 1,
+        "maxLength": 11,
+        "metadata": {
+          "description": "Define the project name or prefix for all objects."
+        }
+      },
+      "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]",
+        "metadata": {
+          "description": "The datacenter to use for the deployment."
+        }
+      },
+      "skuName": {
+        "type": "string",
+        "defaultValue": "S1",
+        "metadata": {
+          "description": "The SKU to use for the IoT Hub."
+        }
+      },
+      "skuUnits": {
+        "type": "string",
+        "defaultValue": "1",
+        "metadata": {
+          "description": "The number of IoT Hub units."
+        }
+      },
+      "d2cPartitions": {
+        "type": "string",
+        "defaultValue": "4",
+        "metadata": {
+          "description": "Partitions used for the event stream."
+        }
+      }
+    },
+    "variables": {
+      "iotHubName": "[concat(parameters('projectName'), 'hub', uniqueString(resourceGroup().id))]"      
+    },
+    "resources": [    
+      {
+        "type": "Microsoft.Devices/IotHubs",
+        "apiVersion": "2020-07-10-preview",
+        "name": "[variables('IoTHubName')]",
+        "location": "[parameters('location')]",       
+        "sku": {
+          "name": "[parameters('skuName')]",
+          "capacity": "[parameters('skuUnits')]"
+        },
+        "properties": {
+          "eventHubEndpoints": {
+            "events": {
+              "retentionTimeInDays": 1,
+              "partitionCount": "[parameters('d2cPartitions')]"
+            }
+          }
+        }
+      }
+    ],
+    "outputs": {
+      "iotHubName": {
+        "type": "string",
+        "value": "[variables('IoTHubName')]"
+      }
+    }
+  }
