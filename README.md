@@ -16,7 +16,7 @@ In this solution we make use of Fluentd log driver, in particular a sub project 
 
 Following design explains the overall architecture of the solution:
 
-![Design](Design/LogDriverHighlevelDesign.png)
+![Design](images/LogDriverHighlevelDesign.png)
 
 So how does this work? To understand the solution, we have a consider following two main aspects of the solution:
 
@@ -38,6 +38,22 @@ To push the logs from modules to Fluentd based log processor (Fluent-Bit), we ne
 1. It allows you to receive logs from Docker daemon without connecting to Docker socket or requiring privilege access, reducing surface attack area for edge.
 2. It allows you either use prebuilt/3rd party log processors (e.g. [Fluent-Bit](https://fluentbit.io/)) or create your own container/module following [Docker log driver API model](https://docs.docker.com/engine/extend/plugins_logging/).
 3. It allows you to store logs via already available sinks (e.g. storage account connector), to the edge storage account for local processing or Log Analytics service directly.
+
+## Solution Deployment
+
+Follow the steps here on Ubuntu/Linux to deploy the solution (with Log Analytics sink) along with all dependencies in Azure:
+
+1. Install jq via: sudo apt-get install jq
+2. Clone the repo using: clone git@github.com:suneetnangia/iot-edge-logging-fluentd.git
+3. Go to directory: iot-edge-logging-fluentd/deploy
+4. Execute: ./deploy.sh "[new resource group name]" "[ssh public key]"
+
+Example of cmd line is given here:
+
+./deploy.sh "loggingRG" "ssh-rsa AAAAB3NzaC1yc2EACCCDAQABAAABgQD1KWmN/yqr9hBmaS4zOHfMqrrKxWWJxHs+3W1Gt5PqGoS8zRC633dMwiOxsS0uSh+EHlVDxdzwLWv11uyd6PMcNWp2L3D3mL7vB8M+6vajLceY+MKULa8r2PrWxzaCCBldXcLhD5Uzap+8z9CI4vqO4C1lR9N0O6gSfn4TO/FqtaraWNqwMP9ug6feMfXDCZ6tCkwihmPAmYzLCrstDYH98L0DiCmMQGsFe3g+RI8jGrs1dglWoCnrLeo3vzIvOBbw8HJmtWRfbe0iQYRes1b3N9QSDXBWLUalaNMJ3HkSAS2RYQIvyU9krqxb0wjBHHwTX4OX9Wn9fCd2Ah5WLcAxBxppYyuiLhgycRqUgQBa7svf00EH9E3gndTUoCRg4fx5Q8BhE92BjwaXvvuswE3FpWwp10cCTjYgjjuUC0qqPhMEE0SNqBqzLSZwjTCKSK+9fPN7SIwc9dzTBraAIGBAilzF7csFjiuaxxQDpTGgAI2M+6658VJtOVZ62vU4VWU= suneet.nangia@mail.com"
+
+Once deployed, you should see the logs starting to appear in Log Analytics like below:
+![Design](images/LogDriverLAOutput.png)
 
 ## Nuances
 
