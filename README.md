@@ -10,7 +10,7 @@ One of the use cases for using this approach is offline mode where edge is not a
 
 ## Solution
 
-Docker has multiple logging mechanisms to allow monitoring of the containers, these mechanisms are implemented as [logging driver](https://docs.docker.com/config/containers/logging/configure/). Docker supports a few logging drivers out of the box which can be used to channel logs from containers readily. Example of these log drivers include json-file (default), local file, AWS Cloud Watch, Google Cloud Logging and Fluentd. *While file based log drivers could be used as well in the solution, Docker warns you to use this approach (see variants section below).*
+Docker has multiple logging mechanisms to allow monitoring of the containers, these mechanisms are implemented as [logging driver](https://docs.docker.com/config/containers/logging/configure/). Docker supports a few logging drivers out of the box which can be used to channel logs from containers readily. Example of these log drivers include json-file (default), local file, AWS Cloud Watch, Google Cloud Logging and Fluentd. *While file based log drivers could be used as well in the solution, Docker categorically warns you against this approach (see variants section below).*
 
 In this solution we make use of Fluentd log driver, in particular a sub project of Fluentd called [Fluent-Bit](https://fluentbit.io/) which is developed for *high performance and low resource footprint*. Fluent Bit is an open source Log Processor and Forwarder which allows you to collect any data like metrics and logs from different sources, enrich them with filters and send them to multiple destinations. Fluent Bit is also a CNCF (Cloud Native Computing Foundation) subproject under the umbrella of Fluentd.
 
